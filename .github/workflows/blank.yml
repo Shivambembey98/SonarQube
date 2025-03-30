@@ -1,0 +1,26 @@
+name: Implement SonarQube scans on Rentte 
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  sonar-qube:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: SSH into EC2 and deploy Angular app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            sudo su -
+            yum install -y git
+            wget https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
+
+            
