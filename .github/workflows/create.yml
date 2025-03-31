@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            sudo su -
+            sudo -i
             yum install -y git
             sudo yum install -y java-17-amazon-corretto-devel
             cd /opt
@@ -28,7 +28,7 @@ jobs:
             sudo useradd -m -s /bin/bash sonaradmin
             echo -e "shivam@123\nshivam@123" | sudo passwd sonaradmin
             chown -R sonaradmin:sonaradmin /opt
-            su - sonaradmin
+            sudo -i -u sonaradmin
             cd /opt/sonarqube-25.3.0.104237/bin/linux-x86-64/
             ./sonar.sh start
             sleep 5
