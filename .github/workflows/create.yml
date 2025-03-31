@@ -1,0 +1,36 @@
+name: Creating SonarQube server
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  sonar-qube:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: SSH into EC2 and deploy Angular app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            sudo su -
+            yum install -y git
+            sudo yum install -y java-17-amazon-corretto-devel
+            cd /opt
+            wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-25.3.0.104237.zip
+            unzip sonarqube-25.3.0.104237.zip
+            sudo useradd -m -s /bin/bash sonaradmin
+            echo -e "shivam@123\nshivam@123" | sudo passwd sonaradmin
+            chown -R sonaradmin:sonaradmin /opt
+            su - sonaradmin
+            cd /opt/sonarqube-25.3.0.104237/bin/linux-x86-64/
+            ./sonar.sh start
+            sleep 5
+
+            
