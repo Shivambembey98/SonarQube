@@ -44,7 +44,8 @@ jobs:
               git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
               cd Rentte-backend
             fi
-            
+            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend
+            sudo chmod -R 755 /opt/Rentte-backend
             # Export SonarScanner path
             echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
             source ~/.bash_profile
