@@ -19,19 +19,17 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            set -x  # Debugging
-
             sudo -i
             cd /opt
             
             # Ensure SonarScanner is installed
             if [ ! -d "sonar-scanner-7.0.2.4839-linux-x64" ]; then
-              sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip
-              sudo unzip sonar-scanner-cli-7.0.2.4839-linux-x64.zip
+              sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..
+              sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..'
             fi
             
-            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt
-            sudo chmod -R 755 /opt
+            # sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt
+            # sudo chmod -R 755 /opt
             
             # Ensure Git is set up properly
             git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
@@ -48,16 +46,14 @@ jobs:
             fi
             
             # Export SonarScanner path
-            export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin
+            echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
+            source ~/.bash_profile
             
             cd Rentte-backend
-            
             # Run SonarScanner with explicit report parameter
             /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
-              -Dsonar.projectKey=aws_Rentte \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=http://13.126.93.104:9000 \
-              -Dsonar.token=sqp_76e1186575e0ba861c03c7c0d1c9b1f0c9a6cd59 \
-              -Dsonar.projectBaseDir=$(pwd) \
-              -Dsonar.report.export.path=sonar-report.json
+            -Dsonar.projectKey=aws_Rentte \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://13.233.190.247:9000 \
+            -Dsonar.token=sqp_2ff7f8a4af838e09e41a18824fbf63c98e3fa13a
 
