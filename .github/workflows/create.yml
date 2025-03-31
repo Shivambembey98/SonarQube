@@ -22,8 +22,8 @@ jobs:
             sudo yum install -y git
             sudo yum install -y java-17-amazon-corretto-devel
             cd /opt
-            wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-25.3.0.104237.zip
-            unzip sonarqube-25.3.0.104237.zip
+            sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-25.3.0.104237.zip
+            sudo unzip sonarqube-25.3.0.104237.zip
             sudo useradd -m -s /bin/bash sonaradmin
             echo -e "shivam@123\nshivam@123" | sudo passwd sonaradmin
             chown -R sonaradmin:sonaradmin /opt/sonarqube-25.3.0.104237
