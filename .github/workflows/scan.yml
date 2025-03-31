@@ -27,11 +27,12 @@ jobs:
             # Ensure Git is set up properly
             git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
             # Clone or pull the repository
+            cd /opt
             if [ -d "Rentte-backend" ]; then
               cd Rentte-backend
               git pull origin main
             else
-              git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.gitgit
+              git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
               cd Rentte-backend/
             fi
             
