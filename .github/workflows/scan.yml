@@ -56,4 +56,5 @@ jobs:
             -Dsonar.sources=. \
             -Dsonar.host.url=http://${{ secrets.EC2_HOST }}:9000 \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.qualitygate.wait=true
 
