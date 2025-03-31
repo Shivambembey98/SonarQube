@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: SSH into EC2 and deploy Angular app
+      - name: SSH into EC2 
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -23,7 +23,18 @@ jobs:
             cd /opt
             sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.
             sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.'
-            git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
+            
+            # Ensure Git is set up properly
+            git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
+            # Clone or pull the repository
+            if [ -d "Rentte-backend" ]; then
+              cd Rentte-backend
+              git pull origin main
+            else
+              git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.gitgit
+              cd Rentte-backend/
+            fi
+            
             echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
             source ~/.bash_profile
 
