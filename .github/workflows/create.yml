@@ -26,10 +26,8 @@ jobs:
             unzip sonarqube-25.3.0.104237.zip
             sudo useradd -m -s /bin/bash sonaradmin
             echo -e "shivam@123\nshivam@123" | sudo passwd sonaradmin
-            chown -R sonaradmin:sonaradmin /opt
-            sudo -i -u sonaradmin
-            cd /opt/sonarqube-25.3.0.104237/bin/linux-x86-64/
-            ./sonar.sh start
+            chown -R sonaradmin:sonaradmin /opt/sonarqube-25.3.0.104237
+            sudo -u sonaradmin /opt/sonarqube-25.3.0.104237/bin/linux-x86-64/sonar.sh start
             sleep 5
 
             
