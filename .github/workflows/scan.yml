@@ -1,4 +1,4 @@
-name: Creating SonarQube server
+name: Code Quality Scan
 
 on:
   workflow_dispatch:
