@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             sudo -i
-            yum install -y git
+            sudo yum install -y git
             sudo yum install -y java-17-amazon-corretto-devel
             cd /opt
             wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-25.3.0.104237.zip
