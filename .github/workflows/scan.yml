@@ -21,9 +21,12 @@ jobs:
           script: |
             su - sonaradmin
             cd /opt
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.
-            unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.'
+            sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.
+            sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.'
             git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
+            echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
+            source ~/.bash_profile
+
             cd Rentte-backend/
             /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
