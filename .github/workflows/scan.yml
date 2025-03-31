@@ -44,8 +44,6 @@ jobs:
               git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
               cd Rentte-backend
             fi
-            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend
-            sudo chmod -R 755 /opt/Rentte-backend
             
             # Export SonarScanner path
             echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
@@ -54,8 +52,8 @@ jobs:
             cd Rentte-backend
             # Run SonarScanner with explicit report parameter
             /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
-            -Dsonar.projectKey=aws_Rentte \
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
             -Dsonar.sources=. \
-            -Dsonar.host.url=http://13.233.190.247:9000 \
-            -Dsonar.token=sqp_2ff7f8a4af838e09e41a18824fbf63c98e3fa13a
+            -Dsonar.host.url=http://${{ secrets.EC2_HOST }}:9000 \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
