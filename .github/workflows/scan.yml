@@ -19,21 +19,27 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            su - sonaradmin
+            set -x  # Debugging
             cd /opt
-            sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.
-            sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.'
+            # Ensure SonarScanner is installed
+            if [ ! -d "sonar-scanner-7.0.2.4839-linux-x64" ]; then
+              sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.
+              sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*cpo1pd*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwMTU0Mi4zLjEuMTc0MzQwMTU0Ni41Ny4wLjA.'
+            fi
+            
+            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt
+            sudo chmod -R 755 /opt
             
             # Ensure Git is set up properly
             git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
+            
             # Clone or pull the repository
-            cd /opt
             if [ -d "Rentte-backend" ]; then
               cd Rentte-backend
-              git pull origin main
+              git pull origin develop
             else
               git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
-              cd Rentte-backend/
+              cd Rentte-backend
             fi
             
             echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
