@@ -19,38 +19,38 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            # sudo -i
-            cd /opt
-            
-            # Ensure SonarScanner is installed
-            if [ ! -d "sonar-scanner-7.0.2.4839-linux-x64" ]; then
-              sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..
-              sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..'
-            fi
-            
-            # sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt
-            # sudo chmod -R 755 /opt
-            
-            # Ensure Git is set up properly
-            git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
-            
-            cd /opt
-            
-            # Clone or pull the repository
-            if [ -d "Rentte-backend" ]; then
-              cd Rentte-backend
-              git pull origin develop
-            else
-              git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
-              cd Rentte-backend
-            fi
-            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend
-            sudo chmod -R 755 /opt/Rentte-backend
-            
-            # Export SonarScanner path
-            echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
-            source ~/.bash_profile
-
             sudo -i
-            cd /opt/Rentte-backend
-            # Run SonarScanner with explicit report parameter
+            
+
+            # Add the specified configurations to sonar-scanner.properties
+            echo "sonar.projectKey=aws_Rentte" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.sources=lambda,lib,bin" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.language=js" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.exclusions=node_modules/**,coverage/**" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.javascript.lcov.reportPaths=coverage/lcov.info" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.eslint.reportPaths=eslint-report.json" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.qualitygate.wait=true" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.host.url=http://13.232.185.209:9000" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+            echo "sonar.token=sqp_c4b4396c4d265a8d68e47db9e999265e74ba5bcf" | sudo tee -a /opt/sonar-scanner-7.0.2.4839-linux-x64/conf/sonar-scanner.properties
+
+            cd /opt/Rentte-backend/Rentte/Rentte-aws-lambda
+
+            # Install Node.js and NPM
+            sudo yum install -y nodejs npm
+
+            # Install project dependencies
+            sudo npm install
+
+            # Run tests with coverage
+            sudo npm test -- --coverage
+
+            # Install ESLint and initialize
+            sudo npm install --save-dev eslint
+            sudo npx eslint --init
+            sudo npx eslint .
+            
+            sudo -i
+            cd /opt/Rentte-backend/Rentte/Rentte-aws-lambda
+            sonar-scanner
+            
+            
