@@ -21,7 +21,8 @@ jobs:
           script: |
              # Ensure running as root user
               sudo su -
-              
+              whoami
+
               cd /opt
               
               # Ensure SonarScanner is installed
@@ -48,6 +49,8 @@ jobs:
               chmod -R 775 /opt/Rentte-backend/.scannerwork/.sonartmp
 
               yum install docker
+              whoami
+
               # Clone or pull the repository
               if [ -d "Rentte-backend" ]; then
                 cd Rentte-backend
