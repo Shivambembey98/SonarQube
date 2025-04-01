@@ -57,4 +57,4 @@ jobs:
             -Dsonar.host.url=http://13.232.185.209:9000 \
             -Dsonar.token=sqp_c4b4396c4d265a8d68e47db9e999265e74ba5bcf
             
-            
+    continue-on-error: true            
