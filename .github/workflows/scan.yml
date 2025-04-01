@@ -50,8 +50,9 @@ jobs:
             # Export SonarScanner path
             echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
             source ~/.bash_profile
-            
-            cd Rentte-backend
+
+            sudo -i
+            cd /opt/Rentte-backend
             # Run SonarScanner with explicit report parameter
             /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
             -Dsonar.projectKey=aws_Rentte \
