@@ -28,8 +28,8 @@ jobs:
               sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..'
             fi
             
-            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt
-            sudo chmod -R 755 /opt
+            # sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt
+            # sudo chmod -R 755 /opt
             
             # Ensure Git is set up properly
             git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
@@ -44,8 +44,7 @@ jobs:
               git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
               cd Rentte-backend
             fi
-            # sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend
-            # sudo chmod -R 755 /opt/Rentte-backend
+            
             # Export SonarScanner path
             echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
             source ~/.bash_profile
@@ -57,5 +56,3 @@ jobs:
             -Dsonar.sources=. \
             -Dsonar.host.url=http://${{ secrets.EC2_HOST }}:9000 \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-            
-
