@@ -39,9 +39,9 @@ jobs:
             # Clone or pull the repository
             if [ -d "Rentte-backend" ]; then
               cd Rentte-backend
-              sudo git pull origin develop
+              git pull origin develop
             else
-              sudo git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
+              git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
               cd Rentte-backend
             fi
             sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend
