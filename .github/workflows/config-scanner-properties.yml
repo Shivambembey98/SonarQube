@@ -46,7 +46,7 @@ jobs:
 
             # Install ESLint and initialize
             sudo npm install --save-dev eslint
-            sudo npx eslint --init
+            sudo npx eslint --init --yes --eslint-config @eslint/js
             sudo npx eslint .
             
             sudo -i
