@@ -7,10 +7,7 @@ jobs:
 
   sonar-qube:
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_RUNNER_DEBUG: true
-      ACTIONS_STEP_DEBUG: true
-      
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,53 +19,42 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-             # Ensure running as root user
-              sudo su -
-              whoami
-
-              cd /opt
-              
-              # Ensure SonarScanner is installed
-              if [ ! -d "sonar-scanner-7.0.2.4839-linux-x64" ]; then
-                wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..
-                unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..'
-              fi
-              
-              # Export SonarScanner path
-              echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
-              source ~/.bash_profile
-              
-              # Ensure Git is set up properly
-              git config --global --add safe.directory /opt/Rentte-backend
-              
-              # Fix directory permissions to avoid access issues
-              mkdir -p /opt/Rentte-backend/.scannerwork
-              chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend/.scannerwork
-              chmod -R 775 /opt/Rentte-backend/.scannerwork
-  
-              # Fix permissions for Sonar temporary folder (.sonartmp)
-              mkdir -p /opt/Rentte-backend/.scannerwork/.sonartmp
-              chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend/.scannerwork/.sonartmp
-              chmod -R 775 /opt/Rentte-backend/.scannerwork/.sonartmp
-
-              yum install docker
-              whoami
-
-              # Clone or pull the repository
-              if [ -d "Rentte-backend" ]; then
-                cd Rentte-backend
-                git pull origin develop
-              else
-                git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
-                cd Rentte-backend
-              fi
-              
-              sudo su -
-              cd /opt/Rentte-backend
-              # Run SonarScanner with explicit report parameter
-              /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
-              -Dsonar.projectKey=aws_Rentte \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=http://13.232.185.209:9000 \
-              -Dsonar.token=sqp_c4b4396c4d265a8d68e47db9e999265e74ba5bcf
+            # sudo -i
+            cd /opt
             
+            # Ensure SonarScanner is installed
+            if [ ! -d "sonar-scanner-7.0.2.4839-linux-x64" ]; then
+              sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..
+              sudo unzip 'sonar-scanner-cli-7.0.2.4839-linux-x64.zip?_gl=1*180bom1*_gcl_au*NTUwMjE3MDQyLjE3NDMwNzEzNzA.*_ga*ODI1OTU1OTEyLjE3NDMwNzEzNzA.*_ga_9JZ0GZ5TC6*MTc0MzQwOTYyNC40LjEuMTc0MzQxNTI5NC45LjAuMA..'
+            fi
+            
+            # sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt
+            # sudo chmod -R 755 /opt
+            
+            # Ensure Git is set up properly
+            git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
+            
+            cd /opt
+            
+            # Clone or pull the repository
+            if [ -d "Rentte-backend" ]; then
+              cd Rentte-backend
+              git pull origin develop
+            else
+              git clone -b develop https://${{ secrets.PAT_GITHUB }}@github.com/Rentte/Rentte-backend.git
+              cd Rentte-backend
+            fi
+            sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /opt/Rentte-backend
+            sudo chmod -R 755 /opt/Rentte-backend
+            
+            # Export SonarScanner path
+            echo 'export PATH=$PATH:/opt/sonar-scanner-7.0.2.4839-linux-x64/bin' >> ~/.bash_profile
+            source ~/.bash_profile
+            
+            cd Rentte-backend
+            # Run SonarScanner with explicit report parameter
+            /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
+            -Dsonar.projectKey=aws_Rentte \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://13.233.190.247:9000 \
+            -Dsonar.token=sqp_2ff7f8a4af838e09e41a18824fbf63c98e3fa13a
