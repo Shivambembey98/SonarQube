@@ -47,7 +47,8 @@ jobs:
             cd /opt/Rentte-backend
             # Run SonarScanner with explicit report parameter
             /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+            -Dsonar.projectKey=aws_Rentte \
             -Dsonar.sources=. \
-            -Dsonar.host.url=http://${{ secrets.EC2_HOST }}:9000 \
-            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.host.url=http://13.232.185.209:9000 \
+            -Dsonar.token=sqp_c4b4396c4d265a8d68e47db9e999265e74ba5bcf
+            
