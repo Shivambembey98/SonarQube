@@ -51,6 +51,10 @@ jobs:
             
             sudo -i
             cd /opt/Rentte-backend/Rentte/Rentte-aws-lambda
-            sonar-scanner
+            /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
+            -Dsonar.projectKey=aws_Rentte \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://13.232.185.209:9000 \
+            -Dsonar.token=sqp_c4b4396c4d265a8d68e47db9e999265e74ba5bcf
             
             
