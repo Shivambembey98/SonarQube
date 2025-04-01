@@ -52,7 +52,7 @@ jobs:
             sudo -i 
             cd /opt/Rentte-backend
             # Run SonarScanner with explicit report parameter
-            /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
+            sudo /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
             -Dsonar.sources=. \
             -Dsonar.host.url=http://${{ secrets.EC2_HOST }}:9000 \
