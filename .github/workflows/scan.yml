@@ -57,5 +57,5 @@ jobs:
             /opt/sonar-scanner-7.0.2.4839-linux-x64/bin/sonar-scanner \
             -Dsonar.projectKey=aws_Rentte \
             -Dsonar.sources=. \
-            -Dsonar.host.url=http://13.233.190.247:9000 \
-            -Dsonar.token=sqp_2ff7f8a4af838e09e41a18824fbf63c98e3fa13a
+            -Dsonar.host.url=http://13.232.185.209:9000 \
+            -Dsonar.token=sqp_c4b4396c4d265a8d68e47db9e999265e74ba5bcf
