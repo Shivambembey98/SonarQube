@@ -32,7 +32,7 @@ jobs:
             source ~/.bash_profile
             
             # Ensure Git is set up properly
-            git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
+            git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/opt/Rentte-backend
              
             # Clone or pull the repository
             if [ -d "Rentte-backend" ]; then
