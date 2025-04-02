@@ -33,9 +33,9 @@ jobs:
             
             # Ensure Git is set up properly
             git config --global --add safe.directory /home/${{ secrets.EC2_USER }}/Rentte-backend
-            
+
+            sudo -i
             cd /opt
-            
             # Clone or pull the repository
             if [ -d "Rentte-backend" ]; then
               cd Rentte-backend
